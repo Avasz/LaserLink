@@ -240,6 +240,21 @@ class LaserMonitor:
         self.last_state = current_state
         self.last_detailed_status = current_detailed
 
+    def publish_offline_status(self):
+        """Publishes an 'Offline' status to MQTT."""
+        if self.mqtt_client:
+            payload = {
+                "state": "Offline",
+                "detailed_status": "Offline",
+                "job_in_progress": False,
+                "timestamp": time.time()
+            }
+            try:
+                logging.info("Publishing Offline status to MQTT...")
+                self.mqtt_client.publish(self.cfg.mqtt_topic, json.dumps(payload))
+            except Exception as e:
+                logging.error(f"Error publishing Offline status: {e}")
+
     def run(self):
         logging.info(f"Connecting to {self.cfg.bluetooth_mac} on channel {self.cfg.rfcomm_port}...")
         
@@ -259,6 +274,7 @@ class LaserMonitor:
                         data = sock.recv(1024).decode('utf-8')
                         if not data:
                             logging.warning("Connection closed by remote device.")
+                            self.publish_offline_status()
                             break
                             
                         buffer += data
@@ -291,10 +307,12 @@ class LaserMonitor:
                         
                     except socket.error as e:
                         logging.error(f"Socket error: {e}")
+                        self.publish_offline_status()
                         break
                         
             except socket.error as e:
                 logging.error(f"Connection failed: {e}")
+                self.publish_offline_status()
                 logging.info(f"Retrying in 5 seconds...")
                 time.sleep(5)
             except KeyboardInterrupt:
