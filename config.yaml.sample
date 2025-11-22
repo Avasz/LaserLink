@@ -1,0 +1,54 @@
+# LaserLink Configuration
+# All settings can be overridden by Environment Variables (listed in comments).
+
+mqtt:
+  # Env: MQTT_ENABLED (true/false)
+  enabled: true
+  # Env: MQTT_BROKER
+  broker: 192.168.1.100
+  # Env: MQTT_PORT
+  port: 1883
+  # Env: MQTT_TOPIC
+  topic: laser/status
+  # Env: MQTT_USERNAME
+  username: "mqtt_user"
+  # Env: MQTT_PASSWORD
+  password: "your_mqtt_password"
+
+homeassistant:
+  # Env: HA_ENABLED (true/false)
+  enabled: true
+  # Env: HA_DISCOVERY_PREFIX
+  discovery_prefix: "homeassistant"
+  # Env: HA_NODE_ID
+  node_id: "laserlink"
+  # Env: HA_DEVICE_NAME
+  device_name: "Laser Cutter"
+
+telegram:
+  # Env: TELEGRAM_ENABLED (true/false)
+  enabled: false
+  # Env: TELEGRAM_BOT_TOKEN
+  bot_token: ""
+  # Env: TELEGRAM_CHAT_ID
+  chat_id: ""
+  # Env: TELEGRAM_MESSAGE_STARTED
+  message_started: "Laser Job Started!"
+  # Env: TELEGRAM_MESSAGE_COMPLETED
+  message_completed: "Laser Job Completed!"
+
+laser:
+  # Env: BLUETOOTH_MAC
+  bluetooth_mac: "XX:XX:XX:XX:XX:XX" # Required - Replace with your laser's Bluetooth MAC
+  # Env: POLLING_INTERVAL
+  polling_interval: 1.0
+  # Env: RFCOMM_PORT
+  rfcomm_port: 1
+  # Env: FRAMING_THRESHOLD
+  framing_threshold: 20 # Spindle speed <= this is considered Framing (if coolant off)
+  # Env: MAX_SPINDLE_SPEED
+  max_spindle_speed: 1000 # Maximum spindle speed for laser power calculation
+  # Env: SHOW_RAW (true/false)
+  show_raw: false # Set to true to see raw GRBL output
+  # Env: LOG_LEVEL (DEBUG, INFO, WARNING, ERROR)
+  log_level: INFO

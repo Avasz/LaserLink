@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  laserlink:
+    build: .
+    container_name: laserlink
+    restart: unless-stopped
+    # Host networking is often required for reliable Bluetooth access
+    # to the host's controller from inside the container.
+    network_mode: host
+    privileged: true
+    volumes:
+      # Mount config if you want to edit it on the host
+      - ./config.yaml:/app/config.yaml
+      # Mount dbus to allow communication with host bluetooth daemon
+      - /var/run/dbus:/var/run/dbus
+    
+    # Load environment variables from a .env file if present (optional)
+    # Uncomment the following lines to use a .env file for secrets
+    # env_file:
+    #   - .env
+

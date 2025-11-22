@@ -1,0 +1,18 @@
+[Unit]
+Description=LaserLink Service
+After=bluetooth.target network.target
+
+[Service]
+Type=simple
+User=root
+# Change this to your actual project directory
+WorkingDirectory=/opt/laserlink
+# Load environment variables from a secure file
+EnvironmentFile=/etc/laserlink.env
+# Use the python executable from the virtual environment
+ExecStart=/opt/laserlink/venv/bin/python3 src/monitor.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
