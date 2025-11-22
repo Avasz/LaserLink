@@ -69,17 +69,26 @@ By bridging your Laser Cutter to MQTT and Home Assistant, you can unlock powerfu
 
 ## Configuration
 
-You can configure the application using `config.yaml` OR Environment Variables. **Environment Variables take precedence**, making them ideal for secrets.
+**Recommended**: Use `config.yaml` for all settings including secrets.
 
-### 1. config.yaml
-Copy the example config and edit it:
-```bash
-cp config.yaml.example config.yaml # If applicable
-nano config.yaml
-```
+1. Copy the sample configuration:
+   ```bash
+   cp config.yaml.sample config.yaml
+   ```
 
-### 2. Environment Variables
-You can override any setting. This is the recommended way to handle passwords and tokens.
+2. Edit `config.yaml` and fill in your settings:
+   ```bash
+   vim config.yaml
+   ```
+   - Set your laser's Bluetooth MAC address
+   - Configure MQTT broker credentials
+   - Add Telegram bot token and chat ID (if using notifications)
+
+> **Alternative**: If you prefer, you can use Environment Variables instead of `config.yaml`. Environment Variables take precedence over config file settings. See the table below for available variables.
+
+### Environment Variables Reference
+
+If you prefer not to use `config.yaml`, you can set these environment variables:
 
 | Section | Config Option | Environment Variable | Description |
 | :--- | :--- | :--- | :--- |
@@ -108,16 +117,20 @@ You can override any setting. This is the recommended way to handle passwords an
 ## Usage
 
 ### Manual Run
-**Important**: Bluetooth access usually requires `sudo`. To pass environment variables (like your secrets) to the sudo session, use the `-E` flag.
 
-```bash
-# Export secrets first
-export MQTT_PASSWORD="your_password"
-export TELEGRAM_BOT_TOKEN="your_token"
+1. **Configure the application** by editing `config.yaml` with your settings.
 
-# Run with sudo -E
-sudo -E venv/bin/python3 src/monitor.py
-```
+2. **Run the service** (Bluetooth access requires `sudo`):
+   ```bash
+   sudo venv/bin/python3 src/monitor.py
+   ```
+
+> **Note**: If you prefer to use environment variables instead of `config.yaml`, export them first and use `sudo -E` to pass them to the sudo session:
+> ```bash
+> export MQTT_PASSWORD="your_password"
+> export TELEGRAM_BOT_TOKEN="your_token"
+> sudo -E venv/bin/python3 src/monitor.py
+> ```
 
 ### Systemd Service
 To run LaserLink as a background service:
