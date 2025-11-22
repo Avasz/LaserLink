@@ -247,6 +247,10 @@ class LaserMonitor:
                 "state": "Offline",
                 "detailed_status": "Offline",
                 "job_in_progress": False,
+                "laser_power_pct": 0,
+                "feed_rate": 0,
+                "spindle_speed": 0,
+                "mpos": {"x": 0, "y": 0, "z": 0},
                 "timestamp": time.time()
             }
             try:

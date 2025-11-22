@@ -52,8 +52,12 @@ class TestOfflineStatus(unittest.TestCase):
             if topic == "laser/status":
                 data = json.loads(payload)
                 if data.get("detailed_status") == "Offline" and data.get("state") == "Offline":
-                    offline_published = True
-                    break
+                    # Check if other values are reset
+                    if (data.get("laser_power_pct") == 0 and 
+                        data.get("feed_rate") == 0 and 
+                        data.get("mpos", {}).get("x") == 0):
+                        offline_published = True
+                        break
         
         self.assertTrue(offline_published, "Offline status was not published to MQTT")
 
